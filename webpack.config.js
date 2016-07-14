@@ -1,7 +1,9 @@
 "use strict";
 
-const webpack = require("webpack");
-const lodashPack = require("lodash-webpack-plugin");
+const webpack      = require("webpack");
+const precss       = require('precss');
+const autoprefixer = require('autoprefixer');
+const lodashPack   = require("lodash-webpack-plugin");
 
 module.exports = {
     resolve: {
@@ -28,6 +30,12 @@ module.exports = {
                 warnings: false,
             }
         }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                // Set NODE_ENV to production to compile the production version of React
+                'NODE_ENV': '"production"'
+            }
+        })
     ],
     module: {
         loaders: [
@@ -46,7 +54,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/i,
-                loaders: ["style", "css", "sass"]
+                loaders: ["style", "css", "postcss-loader", "sass"]
             },
             {
                 test: /\.json$/i,
@@ -58,4 +66,5 @@ module.exports = {
             { test: /\.js$/, loader: "source-map-loader" }
         ]
     },
+    postcss: () => [precss, autoprefixer],
 }

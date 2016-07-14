@@ -7,7 +7,7 @@ require("./index.scss");
 
 export interface IProps extends React.Props<any>
 {
-    
+    url: string;
 }
 
 export interface IState
@@ -70,7 +70,7 @@ export class Banner extends React.Component<IProps, IState>
     {
         this.closeBanner(e);
 
-        window.location.href = e.target.href;
+        window.location.href = this.props.url;
     }
 
     private configureHeight(container: HTMLElement)
@@ -112,7 +112,7 @@ export class Banner extends React.Component<IProps, IState>
             <section id="cta-top-banner-container" ref={(r) => this.configureHeight(r)} className={this.state.open ? "open" : "closed"}>
                 <div id="cta-top-banner" ref={(r) => this.banner = r}>
                     <h3>
-                        <a href="/shop" id="cta-top-banner-link" onClick={(e) => this.handleClick(e)}>
+                        <a href={this.props.url} id="cta-top-banner-link" onClick={(e) => this.handleClick(e)}>
                             {`Get 25% off any order by using the coupon code `}
                             <span className="underline">{"HAPPYPETS"}</span> 
                             {` at checkout!`}
@@ -131,5 +131,5 @@ export class Banner extends React.Component<IProps, IState>
     const container = document.createElement("div");
     document.body.appendChild(container);
 
-    Dom.render(<Banner />, container);
+    Dom.render(<Banner url="/shop" />, container);
 }
