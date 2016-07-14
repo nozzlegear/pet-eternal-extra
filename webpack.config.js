@@ -10,7 +10,7 @@ module.exports = {
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
     },
     entry: {
-        "index": "./index.ts",
+        "index": "./index.tsx",
     },
     output: {
         path: "dist",
