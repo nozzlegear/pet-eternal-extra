@@ -3,7 +3,10 @@
 const webpack      = require("webpack");
 const precss       = require('precss');
 const autoprefixer = require('autoprefixer');
+const pkg          = require("./package.json");
 const lodashPack   = require("lodash-webpack-plugin");
+
+console.log("Pet Eternal version", pkg.version);
 
 module.exports = {
     resolve: {
@@ -34,7 +37,8 @@ module.exports = {
             'process.env': {
                 // Set NODE_ENV to production to compile the production version of React
                 'NODE_ENV': '"production"'
-            }
+            },
+            "_VERSION": `"${pkg.version}"`,
         })
     ],
     module: {

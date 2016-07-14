@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Dom from "react-dom";
 
 declare var require: (package: string) => void;
+declare var _VERSION: string;
 
 require("./index.scss");
 
@@ -131,6 +132,12 @@ export class Banner extends React.Component<IProps, IState>
 }
 
 {
+    //Make version info available to the browser
+    const petEternal = window["PetEternal"] || {};
+    petEternal.version = _VERSION;
+    window["PetEternal"] = petEternal;
+
+    //Create a container for the component and render it into the dom
     const container = document.createElement("div");
     document.body.appendChild(container);
 
