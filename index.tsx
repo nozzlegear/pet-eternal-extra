@@ -77,6 +77,11 @@ export class Banner extends React.Component<IProps, IState>
     {
         this.container = container;
 
+        if (!container)
+        {
+            return;
+        }
+
         if (this.state.open)
         {
             container.style.height = this.banner.clientHeight + "px";
@@ -106,8 +111,6 @@ export class Banner extends React.Component<IProps, IState>
     
     public render()
     {
-        const hasClosed = JSON.parse(localStorage.getItem(this.storageKey) || false.toString()) as boolean;
-
         return (
             <section id="cta-top-banner-container" ref={(r) => this.configureHeight(r)} className={this.state.open ? "open" : "closed"}>
                 <div id="cta-top-banner" ref={(r) => this.banner = r}>
