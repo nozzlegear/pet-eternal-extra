@@ -1,0 +1,45 @@
+#cta-top-banner-container
+{
+    -moz-transition: .25s linear;
+    -webkit-transition: .25s linear;
+    transition: .25s linear;
+    height: 0;
+    text-align:center;
+    visibility: hidden;
+    position:fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+
+    &.open
+    {
+        visibility: visible;
+    }
+
+    #cta-top-banner
+    {
+        background-color: #08466f;
+        color: #fff;
+        padding: 3rem 2rem;
+        display: flex;
+        align-items: center;
+
+        > h3
+        {
+            margin: 0;
+            font-size:2.3rem;
+            font-weight:300;
+            flex: 1;
+
+            > a
+            {
+                color: #fff;
+            }
+        }
+
+        > a#cta-top-banner-close
+        {
+            font-size: 1.8rem;
+        }
+    }
+}
