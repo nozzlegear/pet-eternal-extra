@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as Dom from "react-dom";
+import UploadForm from "./upload_form";
 
 declare var require: (package: string) => void;
 declare var _VERSION: string;
@@ -35,8 +36,11 @@ export class Banner extends React.Component<IProps, IState>
     
     private configureState(props: IProps, useSetState: boolean)
     {
+        let storageItem = localStorage.getItem(this.storageKey);
+        let isOpen = !storageItem;
+
         let state: IState = {
-            open: !JSON.parse(localStorage.getItem(this.storageKey)),
+            open: isOpen,
         }
         
         if (!useSetState)
@@ -132,14 +136,28 @@ export class Banner extends React.Component<IProps, IState>
 }
 
 {
-    //Make version info available to the browser
-    const petEternal = window["PetEternal"] || {};
-    petEternal.version = _VERSION;
-    window["PetEternal"] = petEternal;
+    // Localstorage cannot be used when testing in a local file. Skip rendering the banner which uses localStorage.
+    if (! /file:\/\/\//i.test(window.location.href))
+    {
+        //Make version info available to the browser
+        const petEternal = window["PetEternal"] || {};
+        petEternal.version = _VERSION;
+        window["PetEternal"] = petEternal;
 
-    //Create a container for the component and render it into the dom
-    const container = document.createElement("div");
-    document.body.appendChild(container);
+        //Create a container for the component and render it into the dom
+        const container = document.createElement("div");
+        document.body.appendChild(container);
 
-    Dom.render(<Banner url="/shop" />, container);
+        Dom.render(<Banner url="/shop" />, container);
+    }
+}
+
+{
+    const container = document.querySelector("[data-upload-form]");
+
+    if (container)
+    {
+        // Render the upload form in the container
+        Dom.render(<UploadForm />, container);
+    }
 }

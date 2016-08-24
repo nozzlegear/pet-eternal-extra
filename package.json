@@ -1,6 +1,6 @@
 {
   "name": "pet-eternal-extra",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Extra scripts and utils used by https://www.peteternal.com",
   "main": "dist/index.js",
   "scripts": {
@@ -30,6 +30,7 @@
   "dependencies": {
     "@types/react": "^0.14.27",
     "@types/react-dom": "^0.14.13",
+    "image-blobber": "^1.1.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1"
   }
