@@ -1,14 +1,17 @@
+import ApiClient from "./api";
 import * as React from 'react';
 import * as ImageBlobber from "image-blobber";
 
 export interface IProps extends React.Props<any>
 {
-    
+    apiKey: string;
 }
 
 export interface IState
 {
     blob?: ImageBlobber.BlobDetails;
+
+    uploading?: boolean;
 }
 
 export default class UploadForm extends React.Component<IProps, IState>
@@ -18,11 +21,15 @@ export default class UploadForm extends React.Component<IProps, IState>
         super(props);
         
         this.configureState(props, false);
+
+        this.Client = new ApiClient(props.apiKey);
     }
     
     public state: IState = {};
 
     private Filepicker: HTMLInputElement;
+
+    private Client: ApiClient;
     
     //#region Utility functions
     
@@ -46,7 +53,7 @@ export default class UploadForm extends React.Component<IProps, IState>
 
     private openFilepicker(e: React.MouseEvent<any>)
     {
-        if (this.Filepicker)
+        if (this.Filepicker && ! this.state.uploading)
         {
             this.Filepicker.click();
         }
@@ -60,6 +67,13 @@ export default class UploadForm extends React.Component<IProps, IState>
             {
                 this.setState({blob: blob});
             });
+    }
+
+    public upload()
+    {
+        this.setState({uploading: true});
+
+        return this.Client.uploadBase64(this.state.blob.base64).finally(() => this.setState({uploading: false}));
     }
 
     //#endregion
@@ -100,9 +114,9 @@ export default class UploadForm extends React.Component<IProps, IState>
         }
 
         return (
-            <div id="upload-form" onClick={(e) => this.openFilepicker(e)}>
+            <div id="upload-form" className={this.state.uploading ? "uploading" : ""} onClick={(e) => this.openFilepicker(e)}>
                 {img}
-                <input id="upload-form-filepicker" type="file" ref={(fp) => this.Filepicker = fp} onChange={(e) => this.handleFileChange(e)} />
+                <input id="upload-form-filepicker" type="file" accept="image/*" ref={(fp) => this.Filepicker = fp} onChange={(e) => this.handleFileChange(e)} />
             </div>
         );
     }

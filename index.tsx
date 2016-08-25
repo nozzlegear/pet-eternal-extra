@@ -154,10 +154,79 @@ export class Banner extends React.Component<IProps, IState>
 
 {
     const container = document.querySelector("[data-upload-form]");
+    const form = document.querySelector("form[method=post].cart") as HTMLFormElement;
+    const apiKey = document.getElementById("pet-eternal-api-key").innerHTML;
+    let fullImageInput: HTMLInputElement;
+    let thumbImageInput: HTMLInputElement;
 
-    if (container)
+    if (container && form && apiKey)
     {
+        const button = form.querySelector("button[type=submit]");
+        const originalButtonHtml = button.innerHTML;
+        let uploading = false;
+
+        // Create an input to record the image's final URL after upload.
+        {
+            fullImageInput = document.createElement("input");
+            fullImageInput.type = "hidden";
+            fullImageInput.name = "custom-options[full_image_link]";
+
+            thumbImageInput = document.createElement("input");
+            thumbImageInput.type = "hidden";
+            thumbImageInput.name = "custom-options[thumb_image_link]";
+
+            form.appendChild(fullImageInput);
+            form.appendChild(thumbImageInput);
+        }
+
         // Render the upload form in the container
-        Dom.render(<UploadForm />, container);
+        const uploadForm: UploadForm = Dom.render<UploadForm>(<UploadForm apiKey={apiKey} />, container) as any;
+
+        // Add an event listener to the form to prevent pressing enter to submit and bypass image upload.
+        // This event listener is not called when submit is called programatically (via form.submit()).
+        form.addEventListener("submit", (e) => e.preventDefault());
+
+        // Since we don't control the WooCommerce 'Add to Cart' button, wire up an event listener on it to 
+        // prevent adding to the cart before the user has uploaded an image.
+        button.addEventListener("click", (e) =>
+        {
+            e.preventDefault();
+
+            if (uploading)
+            {
+                return;
+            }
+
+            uploading = true;
+            button.innerHTML = "<i class='fa fa-spinner fa-spin marRight5'></i> Uploading image...";
+
+            console.log("Beginning form upload.");
+
+            uploadForm.upload().then((result) =>
+            {
+                // Image's URL must be added to the form to be shown in WooCommerce's checkout.
+                fullImageInput.value = result.fullAzureUrl;
+                thumbImageInput.value = result.thumbnailAzureUrl;
+                
+                form.submit();       
+            }).catch((e) =>
+            {
+                if (e instanceof Error)
+                {
+                    console.error("Error uploading image to Pet Eternal API.", e);
+                } 
+                else
+                {
+                    const error: XMLHttpRequest = e;
+
+                    console.error(`API returned an error when uploading user image: ${error.status} ${error.statusText}`, error.responseText);
+                }
+
+                alert("Something went wrong and your image could not be uploaded. Please try again.");
+
+                uploading = false;
+                button.innerHTML = originalButtonHtml;
+            });
+        })
     }
 }
