@@ -135,6 +135,11 @@ export class Banner extends React.Component<IProps, IState>
     }
 }
 
+/**
+ * # # # 
+ * All pages
+ * # # #
+ */
 {
     // Localstorage cannot be used when testing in a local file. Skip rendering the banner which uses localStorage.
     if (! /file:\/\/\//i.test(window.location.href))
@@ -152,6 +157,51 @@ export class Banner extends React.Component<IProps, IState>
     }
 }
 
+/**
+ * # # #
+ * Cart page
+ * # # #
+ */
+{
+    const table = document.querySelector("table.shop_table.cart");
+
+    if (table)
+    {
+        const rows = table.querySelectorAll("tr.cart_item");
+
+        // Iterate over each row
+        for (let i = 0; i < rows.length; i++)
+        {
+            const row = rows.item(i);
+            const container = row.querySelector("td.product-uploaded-image");
+
+            // Read the row's data
+            const data: { options: {name: string; value: "Pet Name" | "full_image_link" | "thumb_image_link"; price: string; }[] } = JSON.parse(row.querySelector("script.cart_item_data").innerHTML);
+
+            // Find the product's full_image_link and create an image from it
+            const filteredData = data.options.filter(opt => opt.name === "thumb_image_link");
+
+            if (filteredData.length === 0 || !container)
+            {
+                continue;
+            }
+
+            const thumbLink = filteredData[0];
+            const img = document.createElement("img");
+            img.src = thumbLink.value;
+            img.classList.add("img-responsive");
+
+            // Append the image to the row
+            container.appendChild(img);
+        }
+    }
+}
+
+/**
+ * # # #
+ * Product pages
+ * # # #
+ */
 {
     const container = document.querySelector("[data-upload-form]");
     const form = document.querySelector("form[method=post].cart") as HTMLFormElement;
@@ -207,8 +257,6 @@ export class Banner extends React.Component<IProps, IState>
 
             uploading = true;
             button.innerHTML = "<i class='fa fa-spinner fa-spin marRight5'></i> Uploading image...";
-
-            console.log("Beginning form upload.");
 
             uploadForm.upload().then((result) =>
             {
