@@ -156,28 +156,36 @@ export class Banner extends React.Component<IProps, IState>
     const container = document.querySelector("[data-upload-form]");
     const form = document.querySelector("form[method=post].cart") as HTMLFormElement;
     const apiKey = document.getElementById("pet-eternal-api-key").innerHTML;
-    let fullImageInput: HTMLInputElement;
-    let thumbImageInput: HTMLInputElement;
 
     if (container && form && apiKey)
     {
+        let fullImageInput: HTMLInputElement;
+        let thumbImageInput: HTMLInputElement;
+
+        // Find the image inputs
+        const inputs = form.querySelectorAll("input[type=text]");
+
+        for (let i = 0; i < inputs.length; i++)
+        {
+            const input = inputs.item(i) as HTMLInputElement;
+
+            if (input.name === "custom-options[full_image_link]")
+            {
+                fullImageInput = input;
+            }
+            else if (input.name === "custom-options[thumb_image_link]")
+            {
+                thumbImageInput = input;
+            }
+        }
+
+        // Hide both of the inputs
+        fullImageInput.type = "hidden";
+        thumbImageInput.type = "hidden";
+
         const button = form.querySelector("button[type=submit]");
         const originalButtonHtml = button.innerHTML;
         let uploading = false;
-
-        // Create an input to record the image's final URL after upload.
-        {
-            fullImageInput = document.createElement("input");
-            fullImageInput.type = "hidden";
-            fullImageInput.name = "custom-options[full_image_link]";
-
-            thumbImageInput = document.createElement("input");
-            thumbImageInput.type = "hidden";
-            thumbImageInput.name = "custom-options[thumb_image_link]";
-
-            form.appendChild(fullImageInput);
-            form.appendChild(thumbImageInput);
-        }
 
         // Render the upload form in the container
         const uploadForm: UploadForm = Dom.render<UploadForm>(<UploadForm apiKey={apiKey} />, container) as any;
