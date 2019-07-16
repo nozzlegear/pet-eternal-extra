@@ -1,0 +1,11 @@
+bin
+dist
+obj
+packages
+node_modules
+paket-files
+*.md
+*.svg
+*.gif
+*.styl
+*.ico
