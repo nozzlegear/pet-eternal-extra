@@ -1,6 +1,6 @@
 {
     "name": "pet-eternal-extra",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "description": "Extra scripts and utils used by https://www.peteternal.com",
     "main": "dist/index.js",
     "scripts": {
@@ -12,7 +12,10 @@
     "author": "Joshua Harms <joshua@nozzlegear.com>",
     "license": "MIT",
     "browserslist": [
-        "last 1 Chrome versions"
+        "last 2 Chrome versions",
+        "last 2 Firefox versions",
+        "last 2 Safari versions",
+        "last 2 Edge versions"
     ],
     "devDependencies": {
         "@types/react": "^16.8.23",
