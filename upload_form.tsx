@@ -59,16 +59,18 @@ export default class UploadForm extends React.Component<IProps, IState> {
             });
     }
 
-    public async upload() {
+    public upload() {
         this.setState({ uploading: true });
 
-        try {
-            const result = await this.Client.uploadBase64(this.state.blob.base64);
-
-            return result;
-        } finally {
-            this.setState({ uploading: false });
-        }
+        return this.Client.uploadBase64(this.state.blob.base64)
+            .then(r => {
+                this.setState({ uploading: false });
+                return r;
+            })
+            .catch(e => {
+                this.setState({ uploading: false });
+                return Promise.reject(e);
+            });
     }
 
     //#endregion
