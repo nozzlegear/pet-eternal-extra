@@ -16,6 +16,7 @@
         "@types/react-dom": "^16.8.4",
         "@types/reqwest": "github:nozzlegear/reqwest.d.ts#4287b39",
         "parcel": "^1.12.3",
+        "stylus": "^0.54.5",
         "typescript": "^3.5.3"
     },
     "dependencies": {
