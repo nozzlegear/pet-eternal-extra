@@ -5,6 +5,7 @@ import UploadForm from "./upload_form";
 
 declare var require: (package: string) => void;
 require("./index.styl");
+require("regenerator-runtime/runtime");
 
 /**
  * # # #
