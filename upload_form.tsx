@@ -29,7 +29,7 @@ export default class UploadForm extends React.Component<IProps, IState> {
 
     //#region Utility functions
 
-    private configureState(props: IProps, useSetState: boolean) {
+    private configureState: (props: IProps, useSetState: boolean) => void = (props, useSetState) => {
         let state: IState = {};
 
         if (!useSetState) {
@@ -39,27 +39,27 @@ export default class UploadForm extends React.Component<IProps, IState> {
         }
 
         this.setState(state);
-    }
+    };
 
-    //#endregion
-
-    //#region Event handlers
-
-    private openFilepicker(e: React.MouseEvent<any>) {
+    private openFilepicker: (e: React.MouseEvent<any>) => void = e => {
         if (this.Filepicker && !this.state.uploading) {
             this.Filepicker.click();
         }
-    }
+    };
 
-    private handleFileChange(e: React.FormEvent<HTMLInputElement>) {
+    private handleFileChange: (e: React.FormEvent<HTMLInputElement>) => void = e => {
         ImageBlobber.getFileBlobs(e.target)
             .then(files => ImageBlobber.getBase64(files[0]))
             .then(blob => {
                 this.setState({ blob: blob });
             });
-    }
+    };
 
-    public async upload() {
+    public upload: () => Promise<{
+        filename: string;
+        fullAzureUrl: string;
+        thumbnailAzureUrl: string;
+    }> = async () => {
         this.setState({ uploading: true });
 
         try {
@@ -69,13 +69,7 @@ export default class UploadForm extends React.Component<IProps, IState> {
         } finally {
             this.setState({ uploading: false });
         }
-    }
-
-    //#endregion
-
-    public componentDidMount() {}
-
-    public componentDidUpdate() {}
+    };
 
     public componentWillReceiveProps(props: IProps) {
         this.configureState(props, true);
