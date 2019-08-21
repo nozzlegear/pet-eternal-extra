@@ -5,7 +5,8 @@
     "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "yarn validate && parcel build -t browser index.tsx",
+        "start:dev": "yarn validate && parcel serve --no-cache -d parcel-serve-dist --port 3000 index.html",
+        "build": "yarn validate && parcel build --no-cache -t browser index.tsx",
         "validate": "tsc -p . --skipLibCheck --noEmit",
         "prepublishOnly": "yarn build"
     },

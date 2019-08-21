@@ -39,5 +39,6 @@ jspm_packages
 .node_repl_history
 # ===== End Node.gitignore =====
 
-# Parcel cache
+# Parcel
 .cache
+parcel-serve-dist
