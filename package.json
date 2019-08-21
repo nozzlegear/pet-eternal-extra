@@ -21,7 +21,6 @@
     "devDependencies": {
         "@types/react": "^16.8.23",
         "@types/react-dom": "^16.8.4",
-        "@types/reqwest": "github:nozzlegear/reqwest.d.ts#4287b39",
         "parcel": "^1.12.3",
         "stylus": "^0.54.5",
         "typescript": "^3.5.3"
@@ -30,7 +29,6 @@
         "image-blobber": "^1.2.0",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
-        "regenerator-runtime": "^0.13.2",
-        "reqwest": "^2.0.5"
+        "regenerator-runtime": "^0.13.2"
     }
 }
